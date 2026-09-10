@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>For Azgaki ♥</title>
+<title>For Azhagi ♥</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Dancing+Script:wght@500;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--iv:#fff5e9;--pink:#efabb9;--red:#7b1d3d;--deep:#18050d}
@@ -3104,5 +3104,224 @@ window.go=function(n){
 /* Start closed even on a direct load. */
 setFinalCardStateV16("front");
 </script>
+
+<style id="v18-final-card-absolute-fix">
+/* V18 — final card: one clean 3D flip, upright text on the message face. */
+#s6 .loveCard{
+  position:relative!important;
+  width:100%!important;
+  height:100%!important;
+  transform-style:preserve-3d!important;
+  transform:rotateY(0deg)!important;
+  perspective:none!important;
+  transition:transform .95s cubic-bezier(.22,.78,.2,1)!important;
+  overflow:visible!important;
+}
+#s6 .loveCard.v18-message{
+  transform:rotateY(180deg)!important;
+}
+#s6 .loveCard.v18-photo{
+  transform:rotateY(360deg)!important;
+}
+#s6 .loveCard > .cardFront,
+#s6 .loveCard > .cardInside,
+#s6 .loveCard > .cardPhotoFace{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  box-sizing:border-box!important;
+  margin:0!important;
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+  transform-style:preserve-3d!important;
+  transition:none!important;
+}
+/* Front face */
+#s6 .loveCard > .cardFront{
+  transform:rotateY(0deg)!important;
+  opacity:1!important;
+  visibility:visible!important;
+  z-index:3!important;
+}
+/* Message face: counter-rotate so the text is upright when the card is at 180°. */
+#s6 .loveCard > .cardInside{
+  transform:rotateY(180deg)!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  z-index:2!important;
+}
+#s6 .loveCard.v18-message > .cardFront{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+#s6 .loveCard.v18-message > .cardInside{
+  opacity:1!important;
+  visibility:visible!important;
+  z-index:4!important;
+}
+/* Photo face uses the same back-facing orientation, so it is also upright at 180/360°. */
+#s6 .loveCard > .cardPhotoFace{
+  transform:rotateY(180deg)!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  z-index:1!important;
+}
+#s6 .loveCard.v18-photo > .cardFront,
+#s6 .loveCard.v18-photo > .cardInside{
+  opacity:0!important;
+  visibility:hidden!important;
+}
+#s6 .loveCard.v18-photo > .cardPhotoFace{
+  opacity:1!important;
+  visibility:visible!important;
+  z-index:5!important;
+}
+#s6 .cardInside .cardMessage,
+#s6 .cardInside #cardBirthdayText,
+#s6 .cardInside h3{
+  transform:none!important;
+  direction:ltr!important;
+  unicode-bidi:normal!important;
+  text-rendering:auto!important;
+}
+#s6 #cardTakenPhoto{
+  display:block!important;
+  visibility:visible!important;
+  opacity:1!important;
+  transform:none!important;
+}
+
+/* V18 — restore the parchment outline clearly. */
+#s4 .royalFrame{
+  position:relative!important;
+  border:2px solid #c89d5e!important;
+  box-shadow:0 10px 28px #0006, inset 0 0 0 1px #f5d79a!important;
+  box-sizing:border-box!important;
+}
+#s4 .letterPaper{
+  position:relative!important;
+  border:2px solid #c09a61!important;
+  box-shadow:inset 0 0 0 1px #f8e3b7, inset 0 0 0 8px #fff8df44, 0 16px 36px #0006!important;
+}
+#s4 .letterPaper:before{
+  content:""!important;
+  position:absolute!important;
+  inset:10px!important;
+  border:2px solid #c29a62!important;
+  box-shadow:inset 0 0 0 1px #fff8dc66!important;
+  pointer-events:none!important;
+  z-index:20!important;
+}
+#s4 .letterPaper:after{
+  content:""!important;
+  position:absolute!important;
+  inset:17px!important;
+  border:1px solid #d5b980!important;
+  pointer-events:none!important;
+  z-index:20!important;
+}
+</style>
+<script id="v18-final-card-js">
+/* V18 — replace the conflicting V16 visual-state logic with one stable 3D card. */
+let finalCardStageV18=0;
+let finalTypingTimerV18=null;
+
+function setFinalCardStateV18(state){
+  const card=document.getElementById("loveCard");
+  if(!card)return;
+  card.classList.remove("open","messageDone","flipped","v16-front","v16-message","v16-photo","v18-front","v18-message","v18-photo");
+  card.classList.add("v18-"+state);
+}
+
+function touchFinalCard(){
+  const card=document.getElementById("loveCard");
+  if(!card)return;
+
+  if(finalCardStageV18===0){
+    finalCardStageV18=1;
+    setFinalCardStateV18("message");
+    const box=document.getElementById("cardBirthdayText");
+    if(box){
+      box.textContent="";
+      clearInterval(finalTypingTimerV18);
+      setTimeout(()=>typeBirthdayV18(box,finalBirthdayTextV9),650);
+    }
+    return;
+  }
+
+  if(finalCardStageV18===1){
+    const box=document.getElementById("cardBirthdayText");
+    if(!box || box.textContent.length<finalBirthdayTextV9.length)return;
+    finalCardStageV18=2;
+    clearInterval(finalTypingTimerV18);
+    prepareFinalPhotoV18();
+    setFinalCardStateV18("photo");
+    setTimeout(()=>{
+      const msg=document.getElementById("lifelongMsg");
+      if(msg)msg.classList.add("showNow");
+    },700);
+  }
+}
+
+function typeBirthdayV18(el,text){
+  el.textContent="";
+  let i=0;
+  clearInterval(finalTypingTimerV18);
+  finalTypingTimerV18=setInterval(()=>{
+    if(i<text.length){
+      el.textContent+=text[i++];
+      const sc=el.closest(".cardMessage");
+      if(sc)sc.scrollTop=sc.scrollHeight;
+    }else{
+      clearInterval(finalTypingTimerV18);
+    }
+  },55);
+}
+
+function prepareFinalPhotoV18(){
+  const img=document.getElementById("cardTakenPhoto");
+  if(!img)return;
+  let data="";
+  try{data=typeof getBirthdayPhotoV13==="function"?getBirthdayPhotoV13():"";}catch(e){}
+  if(!data && typeof takenPhoto==="string" && takenPhoto)data=takenPhoto;
+  if(!data && window.capturedPhotoData)data=window.capturedPhotoData;
+  if(!data){
+    const preview=document.getElementById("photoPreview");
+    if(preview && preview.src && preview.src.indexOf("data:image/")===0)data=preview.src;
+  }
+  if(data){
+    img.src=data;
+    window.capturedPhotoData=data;
+    try{if(typeof saveBirthdayPhotoV13==="function")saveBirthdayPhotoV13(data);}catch(e){}
+  }
+}
+
+/* Reset page 6 to the closed card whenever it is entered. */
+const previousGoV18=window.go;
+window.go=function(n){
+  if(n===6){
+    const old=document.getElementById("s"+current);
+    if(old)old.classList.remove("on");
+    current=6;
+    const target=document.getElementById("s6");
+    if(target)target.classList.add("on");
+    finalCardStageV18=0;
+    clearInterval(finalTypingTimerV18);
+    setFinalCardStateV18("front");
+    const box=document.getElementById("cardBirthdayText");
+    if(box)box.textContent="";
+    const msg=document.getElementById("lifelongMsg");
+    if(msg)msg.classList.remove("showNow");
+    const scene=document.querySelector("#s6 .finalCardScene");
+    if(scene)scene.classList.remove("photoMode");
+    return;
+  }
+  return previousGoV18(n);
+};
+
+setFinalCardStateV18("front");
+</script>
+
 </body>
 </html>
