@@ -1885,6 +1885,237 @@ h3{font-size:1.5rem}
   }
 }
 </style>
+
+<style id="v16-stable-fixes">
+/* V16 — clean, independent final-card faces. Never rotate the text itself. */
+#s6 .loveCard{
+  position:relative!important;
+  transform:none!important;
+  transform-style:flat!important;
+  perspective:none!important;
+  isolation:isolate!important;
+  overflow:visible!important;
+}
+#s6 .cardFront,
+#s6 .cardInside,
+#s6 .cardPhotoFace{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  backface-visibility:visible!important;
+  -webkit-backface-visibility:visible!important;
+  transform-style:flat!important;
+  transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .12s linear,visibility 0s linear 1s!important;
+}
+#s6 .loveCard .cardFront,
+#s6 .loveCard .cardInside,
+#s6 .loveCard .cardPhotoFace{
+  transform-origin:center center!important;
+}
+/* Default: front only */
+#s6 .loveCard.v16-front .cardFront{
+  transform:rotateY(0deg)!important;opacity:1!important;visibility:visible!important;z-index:5!important;transition-delay:0s!important;
+}
+#s6 .loveCard.v16-front .cardInside,
+#s6 .loveCard.v16-front .cardPhotoFace{
+  transform:rotateY(180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+/* First touch: front flips away, birthday message is always normal/readable */
+#s6 .loveCard.v16-message .cardFront{
+  transform:rotateY(-180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+#s6 .loveCard.v16-message .cardInside{
+  transform:rotateY(0deg)!important;opacity:1!important;visibility:visible!important;z-index:5!important;transition-delay:0s!important;
+}
+#s6 .loveCard.v16-message .cardPhotoFace{
+  transform:rotateY(180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+/* Second touch: message flips away, captured photo face flips in */
+#s6 .loveCard.v16-photo .cardFront,
+#s6 .loveCard.v16-photo .cardInside{
+  transform:rotateY(180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+#s6 .loveCard.v16-photo .cardPhotoFace{
+  transform:rotateY(0deg)!important;opacity:1!important;visibility:visible!important;z-index:6!important;transition-delay:0s!important;
+}
+#s6 .cardMessage{height:100%!important;overflow-y:auto!important;overflow-x:hidden!important;box-sizing:border-box!important;}
+#s6 #cardBirthdayText{white-space:pre-wrap!important;overflow-wrap:anywhere!important;}
+#s6 #cardTakenPhoto{display:block!important;visibility:visible!important;opacity:1!important;}
+
+/* V16 — letter is a real scrollable sheet; text cannot be clipped by the unroll animation. */
+#s4 .letterScene{width:min(760px,96vw)!important;max-height:none!important;overflow:visible!important;}
+#s4 .letterPaper.open{
+  height:min(58vh,650px)!important;
+  max-height:min(58vh,650px)!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  box-sizing:border-box!important;
+  animation:none!important;
+  transform:none!important;
+  -webkit-overflow-scrolling:touch!important;
+  scroll-behavior:auto!important;
+}
+#s4 .letterPaper.open .royalContent{
+  display:block!important;height:auto!important;min-height:0!important;max-height:none!important;
+  overflow:visible!important;opacity:1!important;transform:none!important;
+}
+#s4 .letterPaper.open .hand{height:auto!important;max-height:none!important;overflow:visible!important;display:block!important;}
+#s4 .letterPaper.open .signature{display:block!important;position:static!important;margin-top:20px!important;padding-bottom:22px!important;}
+#s4 .waxSeal.broken{display:none!important;}
+@media(max-width:620px){
+  #s4 .letterPaper.open{height:57vh!important;max-height:57vh!important;padding:22px 7% 28px!important;}
+  #s4 .hand{font-size:.95rem!important;line-height:1.5!important;}
+}
+
+/* V16 — cake gets separate, non-overlapping rows. */
+#s5 .content{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:0!important;box-sizing:border-box!important;overflow:visible!important;
+}
+#s5 .content h2{flex:0 0 auto!important;margin:0 0 8px!important;}
+#s5 .count{
+  order:2!important;position:static!important;flex:0 0 52px!important;width:100%!important;height:52px!important;min-height:52px!important;
+  margin:0!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;z-index:20!important;
+}
+#s5 .cakeStage{
+  order:3!important;position:relative!important;flex:0 0 235px!important;width:min(430px,92vw)!important;height:235px!important;
+  margin:0!important;display:grid!important;place-items:end center!important;overflow:visible!important;z-index:5!important;
+}
+#s5 .cakeStage .cake{position:relative!important;bottom:auto!important;margin:0!important;transform:scale(.68)!important;transform-origin:bottom center!important;}
+#s5 .cakeStage:not(.out) .cake{animation:cakeBreath 5s ease-in-out infinite!important;}
+#s5 .cakeStage.out .cake{animation:none!important;opacity:1!important;transform:scale(.68)!important;}
+#s5 .wishMessage{
+  order:4!important;position:static!important;flex:0 0 auto!important;width:100%!important;height:auto!important;min-height:38px!important;
+  margin:10px 0 0!important;padding:0 12px!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  text-align:center!important;line-height:1.2!important;z-index:20!important;box-sizing:border-box!important;
+}
+#s5 #wishBtn{order:5!important;position:static!important;margin:10px 0 0!important;z-index:20!important;}
+@media(max-width:620px){
+  #s5 .content h2{font-size:clamp(2.4rem,9vw,3.4rem)!important;margin-bottom:5px!important;}
+  #s5 .count{flex-basis:48px!important;height:48px!important;min-height:48px!important;font-size:3.1rem!important;}
+  #s5 .cakeStage{flex-basis:220px!important;height:220px!important;}
+  #s5 .cakeStage .cake{transform:scale(.64)!important;}
+  #s5 .cakeStage.out .cake{transform:scale(.64)!important;}
+  #s5 .wishMessage{min-height:40px!important;margin-top:10px!important;font-size:1.1rem!important;}
+  #s5 #wishBtn{margin-top:8px!important;}
+}
+</style>
+
+<style id="v17-final-fix">
+/* V17 — clean 3D card: parent does the flip, each back face is pre-rotated.
+   This keeps every character upright instead of mirroring the birthday text. */
+#s6 .loveCard{
+  transform-style:preserve-3d!important;
+  -webkit-transform-style:preserve-3d!important;
+  perspective:none!important;
+  transition:transform 1.05s cubic-bezier(.2,.78,.18,1)!important;
+  overflow:visible!important;
+}
+#s6 .loveCard .cardFront,
+#s6 .loveCard .cardInside,
+#s6 .loveCard .cardPhotoFace{
+  backface-visibility:hidden!important;
+  -webkit-backface-visibility:hidden!important;
+  transform-style:preserve-3d!important;
+  transition:none!important;
+}
+/* Closed */
+#s6 .loveCard.v16-front{
+  transform:rotateY(0deg)!important;
+}
+#s6 .loveCard.v16-front .cardFront{
+  transform:rotateY(0deg)!important;
+  opacity:1!important;visibility:visible!important;z-index:3!important;
+}
+#s6 .loveCard.v16-front .cardInside{
+  transform:rotateY(180deg)!important;
+  opacity:1!important;visibility:visible!important;z-index:2!important;
+}
+#s6 .loveCard.v16-front .cardPhotoFace{
+  transform:rotateY(180deg)!important;
+  opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+/* First touch: parent flips 180°. The inside face is also rotated 180°,
+   so its text ends up at 360° and is always readable. */
+#s6 .loveCard.v16-message{
+  transform:rotateY(180deg)!important;
+}
+#s6 .loveCard.v16-message .cardFront{
+  transform:rotateY(0deg)!important;
+  opacity:1!important;visibility:hidden!important;z-index:1!important;
+}
+#s6 .loveCard.v16-message .cardInside{
+  transform:rotateY(180deg)!important;
+  opacity:1!important;visibility:visible!important;z-index:3!important;
+}
+#s6 .loveCard.v16-message .cardPhotoFace{
+  transform:rotateY(180deg)!important;
+  opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+/* Second touch: parent completes the turn to 360°. */
+#s6 .loveCard.v16-photo{
+  transform:rotateY(360deg)!important;
+}
+#s6 .loveCard.v16-photo .cardFront,
+#s6 .loveCard.v16-photo .cardInside{
+  opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+#s6 .loveCard.v16-photo .cardFront{
+  transform:rotateY(0deg)!important;
+}
+#s6 .loveCard.v16-photo .cardInside{
+  transform:rotateY(180deg)!important;
+}
+#s6 .loveCard.v16-photo .cardPhotoFace{
+  transform:rotateY(0deg)!important;
+  opacity:1!important;visibility:visible!important;z-index:3!important;
+}
+/* Birthday text itself must never receive a 3D transform. */
+#s6 #cardMessage,
+#s6 #cardBirthdayText,
+#s6 #cardMessage h3{
+  transform:none!important;
+  -webkit-transform:none!important;
+  backface-visibility:visible!important;
+  -webkit-backface-visibility:visible!important;
+}
+
+/* V17 — restore a crisp parchment outline on the open letter. */
+#s4 .letterPaper.open{
+  border:2px solid #b88b52!important;
+  box-shadow:
+    0 18px 38px #0007,
+    inset 0 0 0 1px #f8e9c4,
+    inset 0 0 0 8px #fff8df,
+    inset 0 0 0 9px #c09a61,
+    inset 0 0 26px #7b4b2018!important;
+  outline:1px solid #e3c38b!important;
+  outline-offset:-5px!important;
+}
+#s4 .letterPaper.open:before{
+  content:""!important;
+  position:absolute!important;
+  inset:12px!important;
+  border:1px solid #c09a61!important;
+  border-radius:1px!important;
+  box-shadow:inset 0 0 0 1px #fff8dc55!important;
+  pointer-events:none!important;
+  z-index:10!important;
+}
+#s4 .letterPaper.open:after{
+  content:""!important;
+  position:absolute!important;
+  inset:19px!important;
+  border:1px solid #d5b980!important;
+  pointer-events:none!important;
+  z-index:10!important;
+}
+#s4 .letterPaper.open .royalContent{z-index:11!important;}
+</style>
+
 </head>
 
 <body>
@@ -2603,6 +2834,275 @@ document.addEventListener("keydown",function(e){
     touchFinalCard();
   }
 });
+</script>
+
+<style id="v16-final-last-css">
+
+/* V16 — clean, independent final-card faces. Never rotate the text itself. */
+#s6 .loveCard{
+  position:relative!important;
+  transform:none!important;
+  transform-style:flat!important;
+  perspective:none!important;
+  isolation:isolate!important;
+  overflow:visible!important;
+}
+#s6 .cardFront,
+#s6 .cardInside,
+#s6 .cardPhotoFace{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  backface-visibility:visible!important;
+  -webkit-backface-visibility:visible!important;
+  transform-style:flat!important;
+  transition:transform 1s cubic-bezier(.2,.8,.2,1),opacity .12s linear,visibility 0s linear 1s!important;
+}
+#s6 .loveCard .cardFront,
+#s6 .loveCard .cardInside,
+#s6 .loveCard .cardPhotoFace{
+  transform-origin:center center!important;
+}
+/* Default: front only */
+#s6 .loveCard.v16-front .cardFront{
+  transform:rotateY(0deg)!important;opacity:1!important;visibility:visible!important;z-index:5!important;transition-delay:0s!important;
+}
+#s6 .loveCard.v16-front .cardInside,
+#s6 .loveCard.v16-front .cardPhotoFace{
+  transform:rotateY(180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+/* First touch: front flips away, birthday message is always normal/readable */
+#s6 .loveCard.v16-message .cardFront{
+  transform:rotateY(-180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+#s6 .loveCard.v16-message .cardInside{
+  transform:rotateY(0deg)!important;opacity:1!important;visibility:visible!important;z-index:5!important;transition-delay:0s!important;
+}
+#s6 .loveCard.v16-message .cardPhotoFace{
+  transform:rotateY(180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+/* Second touch: message flips away, captured photo face flips in */
+#s6 .loveCard.v16-photo .cardFront,
+#s6 .loveCard.v16-photo .cardInside{
+  transform:rotateY(180deg)!important;opacity:0!important;visibility:hidden!important;z-index:1!important;
+}
+#s6 .loveCard.v16-photo .cardPhotoFace{
+  transform:rotateY(0deg)!important;opacity:1!important;visibility:visible!important;z-index:6!important;transition-delay:0s!important;
+}
+#s6 .cardMessage{height:100%!important;overflow-y:auto!important;overflow-x:hidden!important;box-sizing:border-box!important;}
+#s6 #cardBirthdayText{white-space:pre-wrap!important;overflow-wrap:anywhere!important;}
+#s6 #cardTakenPhoto{display:block!important;visibility:visible!important;opacity:1!important;}
+
+/* V16 — letter is a real scrollable sheet; text cannot be clipped by the unroll animation. */
+#s4 .letterScene{width:min(760px,96vw)!important;max-height:none!important;overflow:visible!important;}
+#s4 .letterPaper.open{
+  height:min(58vh,650px)!important;
+  max-height:min(58vh,650px)!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  box-sizing:border-box!important;
+  animation:none!important;
+  transform:none!important;
+  -webkit-overflow-scrolling:touch!important;
+  scroll-behavior:auto!important;
+}
+#s4 .letterPaper.open .royalContent{
+  display:block!important;height:auto!important;min-height:0!important;max-height:none!important;
+  overflow:visible!important;opacity:1!important;transform:none!important;
+}
+#s4 .letterPaper.open .hand{height:auto!important;max-height:none!important;overflow:visible!important;display:block!important;}
+#s4 .letterPaper.open .signature{display:block!important;position:static!important;margin-top:20px!important;padding-bottom:22px!important;}
+#s4 .waxSeal.broken{display:none!important;}
+@media(max-width:620px){
+  #s4 .letterPaper.open{height:57vh!important;max-height:57vh!important;padding:22px 7% 28px!important;}
+  #s4 .hand{font-size:.95rem!important;line-height:1.5!important;}
+}
+
+/* V16 — cake gets separate, non-overlapping rows. */
+#s5 .content{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:0!important;box-sizing:border-box!important;overflow:visible!important;
+}
+#s5 .content h2{flex:0 0 auto!important;margin:0 0 8px!important;}
+#s5 .count{
+  order:2!important;position:static!important;flex:0 0 52px!important;width:100%!important;height:52px!important;min-height:52px!important;
+  margin:0!important;display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;z-index:20!important;
+}
+#s5 .cakeStage{
+  order:3!important;position:relative!important;flex:0 0 235px!important;width:min(430px,92vw)!important;height:235px!important;
+  margin:0!important;display:grid!important;place-items:end center!important;overflow:visible!important;z-index:5!important;
+}
+#s5 .cakeStage .cake{position:relative!important;bottom:auto!important;margin:0!important;transform:scale(.68)!important;transform-origin:bottom center!important;}
+#s5 .cakeStage:not(.out) .cake{animation:cakeBreath 5s ease-in-out infinite!important;}
+#s5 .cakeStage.out .cake{animation:none!important;opacity:1!important;transform:scale(.68)!important;}
+#s5 .wishMessage{
+  order:4!important;position:static!important;flex:0 0 auto!important;width:100%!important;height:auto!important;min-height:38px!important;
+  margin:10px 0 0!important;padding:0 12px!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  text-align:center!important;line-height:1.2!important;z-index:20!important;box-sizing:border-box!important;
+}
+#s5 #wishBtn{order:5!important;position:static!important;margin:10px 0 0!important;z-index:20!important;}
+@media(max-width:620px){
+  #s5 .content h2{font-size:clamp(2.4rem,9vw,3.4rem)!important;margin-bottom:5px!important;}
+  #s5 .count{flex-basis:48px!important;height:48px!important;min-height:48px!important;font-size:3.1rem!important;}
+  #s5 .cakeStage{flex-basis:220px!important;height:220px!important;}
+  #s5 .cakeStage .cake{transform:scale(.64)!important;}
+  #s5 .cakeStage.out .cake{transform:scale(.64)!important;}
+  #s5 .wishMessage{min-height:40px!important;margin-top:10px!important;font-size:1.1rem!important;}
+  #s5 #wishBtn{margin-top:8px!important;}
+}
+
+</style>
+<style id="v16-final-specificity-fix">
+/* V16 final override: beat legacy :not(.open):not(.flipped) rules left by older card versions. */
+#s6 .loveCard.v16-front:not(.open):not(.flipped) .cardFront{opacity:1!important;visibility:visible!important;transform:rotateY(0deg)!important;z-index:5!important;}
+#s6 .loveCard.v16-front:not(.open):not(.flipped) .cardInside,
+#s6 .loveCard.v16-front:not(.open):not(.flipped) .cardPhotoFace{opacity:0!important;visibility:hidden!important;transform:rotateY(180deg)!important;z-index:1!important;}
+#s6 .loveCard.v16-message:not(.open):not(.flipped) .cardFront{opacity:0!important;visibility:hidden!important;transform:rotateY(-180deg)!important;z-index:1!important;}
+#s6 .loveCard.v16-message:not(.open):not(.flipped) .cardInside{opacity:1!important;visibility:visible!important;transform:rotateY(0deg)!important;z-index:5!important;}
+#s6 .loveCard.v16-message:not(.open):not(.flipped) .cardPhotoFace{opacity:0!important;visibility:hidden!important;transform:rotateY(180deg)!important;z-index:1!important;}
+#s6 .loveCard.v16-photo:not(.open):not(.flipped) .cardFront,
+#s6 .loveCard.v16-photo:not(.open):not(.flipped) .cardInside{opacity:0!important;visibility:hidden!important;transform:rotateY(180deg)!important;z-index:1!important;}
+#s6 .loveCard.v16-photo:not(.open):not(.flipped) .cardPhotoFace{opacity:1!important;visibility:visible!important;transform:rotateY(0deg)!important;z-index:6!important;}
+</style>
+<script id="v16-stable-final-js">
+/* V16 — one card, three visual states. No parent 3D transform, so text can never mirror. */
+/* Stable letter opener: keep the paper fixed and type only inside the scroll area. */
+function openLetter(){
+  if(letterDone)return;
+  letterDone=true;
+  const paper=document.querySelector("#s4 .letterPaper");
+  const seal=document.getElementById("waxSeal");
+  const hint=document.getElementById("letterHint");
+  const letter=document.getElementById("letter");
+  const signature=document.querySelector("#s4 .signature");
+  if(signature)signature.style.visibility="hidden";
+  if(seal)seal.classList.add("breaking");
+  if(hint)hint.textContent="Opening something special…";
+  setTimeout(()=>{
+    if(paper)paper.classList.add("open");
+    if(seal){seal.classList.add("broken");seal.classList.remove("breaking");}
+    if(!letter)return;
+    letter.textContent="";
+    let i=0;
+    const timer=setInterval(()=>{
+      letter.textContent+=letterText[i++]||"";
+      const sc=paper;
+      if(sc)sc.scrollTop=sc.scrollHeight;
+      if(i>=letterText.length){
+        clearInterval(timer);
+        if(signature)signature.style.visibility="visible";
+        if(hint)hint.textContent="A little piece of my heart, just for you.";
+        const btn=document.getElementById("toCake");
+        if(btn)btn.classList.remove("hidden");
+      }
+    },10);
+  },950);
+}
+
+let finalCardStageV16 = 0;
+let finalTypingTimerV16 = null;
+
+function setFinalCardStateV16(state){
+  const card=document.getElementById("loveCard");
+  if(!card)return;
+  card.classList.remove("open","messageDone","flipped","v16-front","v16-message","v16-photo");
+  card.classList.add("v16-"+state);
+}
+
+function touchFinalCard(){
+  const card=document.getElementById("loveCard");
+  if(!card)return;
+
+  if(finalCardStageV16===0){
+    finalCardStageV16=1;
+    setFinalCardStateV16("message");
+    const box=document.getElementById("cardBirthdayText");
+    if(box){
+      box.textContent="";
+      clearInterval(finalTypingTimerV16);
+      setTimeout(()=>typeBirthdayV16(box,finalBirthdayTextV9),650);
+    }
+    return;
+  }
+
+  if(finalCardStageV16===1){
+    const box=document.getElementById("cardBirthdayText");
+    if(!box || box.textContent.length < finalBirthdayTextV9.length)return;
+    finalCardStageV16=2;
+    clearInterval(finalTypingTimerV16);
+    prepareFinalPhotoV16();
+    setFinalCardStateV16("photo");
+    setTimeout(()=>{
+      const msg=document.getElementById("lifelongMsg");
+      if(msg)msg.classList.add("showNow");
+    },700);
+  }
+}
+
+function typeBirthdayV16(el,text){
+  el.textContent="";
+  let i=0;
+  clearInterval(finalTypingTimerV16);
+  finalTypingTimerV16=setInterval(()=>{
+    if(i<text.length){
+      el.textContent+=text[i++];
+      const sc=el.closest(".cardMessage");
+      if(sc)sc.scrollTop=sc.scrollHeight;
+    }else{
+      clearInterval(finalTypingTimerV16);
+    }
+  },55);
+}
+
+function prepareFinalPhotoV16(){
+  const img=document.getElementById("cardTakenPhoto");
+  if(!img)return;
+  let data="";
+  try{data=typeof getBirthdayPhotoV13==="function"?getBirthdayPhotoV13():"";}catch(e){}
+  if(!data && typeof takenPhoto==="string" && takenPhoto) data=takenPhoto;
+  if(!data && window.capturedPhotoData) data=window.capturedPhotoData;
+  if(!data){
+    const preview=document.getElementById("photoPreview");
+    if(preview && preview.src && preview.src.indexOf("data:image/")===0)data=preview.src;
+  }
+  if(data){
+    img.src=data;
+    window.capturedPhotoData=data;
+    try{if(typeof saveBirthdayPhotoV13==="function")saveBirthdayPhotoV13(data);}catch(e){}
+  }
+}
+
+/* Re-entering page 6 always starts at the closed card. */
+const originalGoV16 = window.go;
+window.go=function(n){
+  /* Page 6 is handled here directly. The old showFinal() belongs to the previous
+     final-page design and expects #surprise, so never call it for the new card. */
+  if(n===6){
+    const old=document.getElementById("s"+current);
+    if(old)old.classList.remove("on");
+    current=6;
+    const target=document.getElementById("s6");
+    if(target)target.classList.add("on");
+
+    finalCardStageV16=0;
+    clearInterval(finalTypingTimerV16);
+    setFinalCardStateV16("front");
+    const box=document.getElementById("cardBirthdayText");
+    if(box)box.textContent="";
+    const msg=document.getElementById("lifelongMsg");
+    if(msg)msg.classList.remove("showNow");
+    const scene=document.querySelector("#s6 .finalCardScene");
+    if(scene)scene.classList.remove("photoMode");
+    return;
+  }
+  return originalGoV16(n);
+};
+
+/* Start closed even on a direct load. */
+setFinalCardStateV16("front");
 </script>
 </body>
 </html>
